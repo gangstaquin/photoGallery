@@ -1,5 +1,8 @@
-# photoGallery
-i created a photo gallery use react js and firebase with beautifull userface animation
-connected to storage and data base save images and delete from storage and DOM with DELETE button
-it can be used as Removing and adding products from the shopping cart too
-i really enjoyed during programming this little amazing project have fun with this :)
+# React + Vite
+
+This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+
+Currently, two official plugins are available:
+
+- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
+- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh

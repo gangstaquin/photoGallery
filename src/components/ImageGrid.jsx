@@ -1,0 +1,63 @@
+import { deleteDoc, doc } from "firebase/firestore"
+import { useFirestore } from "../hooks/useFirestore"
+import { db, storage } from "../firebase/config"
+import { deleteObject, ref } from "firebase/storage"
+import { useState } from "react"
+import { motion } from "framer-motion"
+
+export const ImageGrid = ({setSelectedImg}) => {
+
+    const { docs } = useFirestore('images')
+    const [showDeleteButtons, setShowDeleteButtons] = useState(false)
+
+    const handleDelete = async (e, docId, imageUrl) => {
+        e.stopPropagation()
+        try{
+            //delete img from firestore
+            await deleteDoc(doc(db, 'images', docId))
+            //delete img from storage
+            const imageRef = ref(storage, imageUrl)
+            await deleteObject(imageRef)
+
+        }catch(err) {
+            console.log(err)
+        }
+    }
+
+    const showButtonsAfterDelay = () => {
+        setTimeout(() => {
+            setShowDeleteButtons(true)
+        }, 200)
+    }
+
+    return (
+        <div className="img-grid">
+            { docs && docs.map(doc => (
+                <motion.div 
+                className="img-wrap" 
+                key={doc.id} 
+                onClick={ () => setSelectedImg(doc.url)}
+                layout
+                whileHover={{opacity: 1}}
+                onMouseEnter={showButtonsAfterDelay}
+                onMouseLeave={() => setShowDeleteButtons(false)}
+                >
+
+                    <motion.img 
+                    src={doc.url} 
+                    alt="uploaded pic" 
+                    initial={{opacity: 0}}
+                    animate={{opacity: 1}}
+                    transition={{delay: 1}}
+                    />
+
+                    { showDeleteButtons && (
+                        <button className="delete-button"
+                            onClick={ e => handleDelete(e, doc.id, doc.url)}> Delete
+                        </button>
+                    )}
+                </motion.div>
+            ))}
+        </div>
+    )
+}
